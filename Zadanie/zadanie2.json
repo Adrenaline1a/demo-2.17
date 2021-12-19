@@ -1,0 +1,22 @@
+[
+    {
+        "stay": "Moscow",
+        "number": "RF-86231",
+        "value": "Airbus"
+    },
+    {
+        "stay": "London",
+        "number": "RF-862131",
+        "value": "Boing"
+    },
+    {
+        "stay": "Paris",
+        "number": "RF-862311",
+        "value": "Airbus"
+    },
+    {
+        "stay": "Lissabon",
+        "number": "RF-862317",
+        "value": "Starship"
+    }
+]
