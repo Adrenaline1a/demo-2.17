@@ -4,6 +4,7 @@ __pycache__/
 *$py.class
 primer.json
 zadanie.json
+zadanie2.json
 # C extensions
 *.so
 
