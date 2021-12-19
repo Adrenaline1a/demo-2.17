@@ -19,7 +19,6 @@ def adding(flights, stay, number, value, file_name):
     )
     with open(file_name, "w", encoding="utf-8") as file_out:
         json.dump(flights, file_out, ensure_ascii=False, indent=4)
-    click.secho('Рейс добавлен', fg='green')
     return flights
 
 
@@ -90,6 +89,7 @@ def main(command, filename, stay, value, number, typing):
     )
     if command == 'add':
         adding(flights, stay, number, value, filename)
+        click.secho('Рейс добавлен', fg='green')
     elif command == 'display':
         table(line, flights)
     elif command == 'select':
