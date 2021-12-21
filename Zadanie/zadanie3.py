@@ -6,11 +6,21 @@ import json
 import click
 
 
-def adding(flights, stay, number, value, file_name):
+@click.group()
+def cli():
+    pass
+
+
+@cli.command()
+@click.argument('filename')
+@click.option("-s", "--stay")
+@click.option("-v", "--value")
+@click.option("-n", "--number")
+def adding(filename, stay, number, value):
     """
     Добавление нового рейса
     """
-    print(flights)
+    flights = opening(filename)
     flights.append(
         {
             'stay': stay,
@@ -18,12 +28,20 @@ def adding(flights, stay, number, value, file_name):
             'value': value
         }
     )
-    with open(file_name, "w", encoding="utf-8") as file_out:
+    with open(filename, "w", encoding="utf-8") as file_out:
         json.dump(flights, file_out, ensure_ascii=False, indent=4)
-    return flights
 
 
-def table(line, flights):
+@cli.command()
+@click.argument('filename')
+def table(filename):
+    flights = opening(filename)
+    line = '+-{}-+-{}-+-{}-+-{}-+'.format(
+        '-' * 4,
+        '-' * 20,
+        '-' * 15,
+        '-' * 16
+    )
     """Вывод скиска рейсов"""
     print(line)
     print(
@@ -45,7 +63,17 @@ def table(line, flights):
     print(line)
 
 
-def selecting(line, flights, nom):
+@cli.command()
+@click.argument('filename')
+@click.option("-t", "--typing")
+def selecting(filename, typing):
+    flights = opening(filename)
+    line = '+-{}-+-{}-+-{}-+-{}-+'.format(
+        '-' * 4,
+        '-' * 20,
+        '-' * 15,
+        '-' * 16
+    )
     """Выбор рейсов по типу самолёта"""
     count = 0
     print(line)
@@ -57,7 +85,7 @@ def selecting(line, flights, nom):
             "Тип"))
     print(line)
     for i, num in enumerate(flights, 1):
-        if nom == num.get('value', ''):
+        if typing == num.get('value', ''):
             count += 1
             print(
                 '| {:<4} | {:<20} | {:<15} | {:<16} |'.format(
@@ -68,33 +96,13 @@ def selecting(line, flights, nom):
     print(line)
 
 
-def opening(file_name):
-    with open(file_name, "r", encoding="utf-8") as f_in:
+def opening(filename):
+    with open(filename, "r", encoding="utf-8") as f_in:
         return json.load(f_in)
 
 
-@click.command()
-@click.option("-c", "--command")
-@click.argument('filename')
-@click.option("-s", "--stay")
-@click.option("-v", "--value")
-@click.option("-n", "--number")
-@click.option("-t", "--typing")
-def main(command, filename, stay, value, number, typing):
-    flights = opening(filename)
-    line = '+-{}-+-{}-+-{}-+-{}-+'.format(
-        '-' * 4,
-        '-' * 20,
-        '-' * 15,
-        '-' * 16
-    )
-    if command == 'add':
-        adding(flights, stay, number, value, filename)
-        click.secho('Рейс добавлен', fg='green')
-    elif command == 'display':
-        table(line, flights)
-    elif command == 'select':
-        selecting(line, flights, typing)
+def main():
+    cli()
 
 
 if __name__ == '__main__':
